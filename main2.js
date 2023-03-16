@@ -1,20 +1,3 @@
-const tbElement = document.querySelector('#tbl');
-
-// Tiêu đề
-const htmlsTitle = `
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tên hoa</th>
-            <th>Loại hoa</th>
-            <th>Hình ảnh</th>
-            <th>Chức năng</th>
-        </tr>
-    </thead>
-    `;
-
-tbElement.innerHTML = htmlsTitle;
-
 const listHoa = [
     {
         id: 1,
@@ -48,23 +31,32 @@ const listHoa = [
     }
 ]
 
-// Nội dung
-var htmlsContents = '';
-listHoa.forEach(function (hoa) {
-    htmlsContents += `
-        <tr>
-            <td>${hoa.id}</td>
-            <td><a href="#" title="Hoa Violet">${hoa.tenHoa}</a></td>
-            <td>${hoa.loaiHoa}</td>
-            <td>
-                <img src = '${hoa.hinhAnh}' alt = '${hoa.hinhAnh}' />
-            </td>
-            <td>
-                <a href = '#' title = 'Sửa'><img src = 'images/pencil.gif' alt = 'images/pencil.gif'>Sửa</a>
-                <a href = '#' title = 'Xóa'><img src = 'images/bin.gif' alt = 'images/bin.gif'>Xóa</a>
-            </td>
-        </tr>
-        `;
-})
-
-tbElement.innerHTML += '<tbody>' + htmlsContents + '</tbody>';
+let heading = ` <tr>
+<th>Tên hoa</th>
+<th>Tên hoa</th>
+<th>Loại hoa</th>
+<th>Hình ảnh</th>
+<th>Chức năng</th>
+</tr>`
+function render(flower){
+    return `<tr>
+    <td>${flower.id}</td>
+    <td>${flower.tenHoa}</td>
+    <td>${flower.loaiHoa}</td>
+    <td><img src="${flower.hinhAnh}" alt="${flower.hinhAnh}" /></td>
+    <td>
+					<a href="#" title="Sửa"><img src="images/pencil.gif" alt="pencil.gif" />Sửa</a>
+					<a href="#" title="Xóa"><img src="images/bin.gif" alt="bin.gif" />Xóa</a>
+				</td>
+    </tr>`
+}
+function renderFlowers(listHoa){
+    let elementTable = document.querySelector('table')
+    let str = ''
+    for (const flower of listHoa) {
+        str += render(flower)
+    }
+    elementTable.innerHTML =  heading +str
+    console.log(str);
+}
+renderFlowers(listHoa)
