@@ -8,7 +8,12 @@
 
 <body>
 	<div>
-		<a href="#" title="">Thêm sản phẩm mới<img src="images/plus-small.gif" alt="plus-small.gif" /></a>
+		<a onclick="add()" id="add" href="#" title="">Thêm sản phẩm mới<img src="images/plus-small.gif"
+				alt="plus-small.gif" /></a><br>
+		<label style="display: none;">Tên hoa : </label><input id="name"  style="display: none;"><br>
+		<label style="display: none;">Loại hoa : </label><input id="type"  style="display: none;"><br>
+		<button id="addFlower" style="display: none;">Thêm</button>
+		<button id="updateFlower" style="display: none;">Sửa</button>
 		<h3>Danh sách sản phẩm</h3>
 		<table id="tbl" border="1px">
 
@@ -21,7 +26,7 @@
 		</p>
 		<p>Copyright &copy; 2013 <a href="#" title="VinaTAB.EDU">VinaTAB.EDU</a></p>
 	</div>
-	<script src="main2.js"></script>
 </body>
+<script src="main4.js"></script>
 
 </html>
