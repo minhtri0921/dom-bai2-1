@@ -5,6 +5,22 @@ let heading = ` <tr>
 <th>Hình ảnh</th>
 <th>Chức năng</th>
 </tr>`
+var nameElement = document.getElementById('name')
+var typeElement = document.getElementById('type')
+function handleBlurInput(input) {
+    var errorElement = input.parentElement.querySelector('.form-message');
+    input.onblur = function () {
+        if (input.value === '') {
+            errorElement.setAttribute('style', 'color: red; font-style: italic;');
+            errorElement.innerText = 'Vui lòng nhập';
+        } else {
+            errorElement.innerText = '';
+        }
+    }
+}
+handleBlurInput(nameElement)
+handleBlurInput(typeElement)
+
 var listHoa = [];
 async function renderHoa() {
     listHoa = await fetch('http://localhost:3004/listHoa')
@@ -65,36 +81,42 @@ async function add() {
     document.querySelectorAll("button").forEach(button => {
         button.style.display = "block";
     });
-    
+
     let btnEl = document.getElementById('addFlower')
-    btnEl.onclick = async function(){
+    btnEl.onclick = async function () {
         let newName = document.getElementById('name').value
         let newType = document.getElementById('type').value
-        
-        var formData = {
-            tenHoa: newName,
-            loaiHoa: newType,
-            hinhAnh:"images/tmp/hoa1.jpg"
-        }
-        var options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        }
+
+        if ( newName && newType){
+            var formData = {
+                tenHoa: newName,
+                loaiHoa: newType,
+                hinhAnh: "images/tmp/hoa1.jpg"
+            }
+            var options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }
     
-        await fetch('http://localhost:3004/listHoa', options)
-            .then(function (response) {
-                return response.json();
-            });
+            await fetch('http://localhost:3004/listHoa', options)
+                .then(function (response) {
+                    return response.json();
+                });
     
-        renderHoa()
+            renderHoa()
+        }else{
+            let errorElement = document.getElementById('error-message')
+            errorElement.innerHTML = 'Vui lòng nhập đầy đủ thông tin '
+            errorElement.style.color = 'red'
+        }
     }
 }
 
-async function update(id){
-    let a = listHoa.find(function(hoa){
+async function update(id) {
+    let a = listHoa.find(function (hoa) {
         return hoa.id === id
     })
     document.querySelectorAll("label").forEach(label => {
@@ -107,7 +129,7 @@ async function update(id){
     input[0].value = a.tenHoa
     input[1].value = a.loaiHoa
     let btnUpdate = document.getElementById('updateFlower')
-    btnUpdate.style.display='block'
+    btnUpdate.style.display = 'block'
     btnUpdate.onclick = async function () {
         let name = document.getElementById('name').value
         let type = document.getElementById('type').value
@@ -115,7 +137,7 @@ async function update(id){
         var formData = {
             tenHoa: name,
             loaiHoa: type,
-            hinhAnh : "images/tmp/hoa1.jpg"
+            hinhAnh: "images/tmp/hoa1.jpg"
         }
 
         var options = {
@@ -130,8 +152,8 @@ async function update(id){
             .then(function (response) {
                 return response.json();
             });
-            document.getElementById('name').value = ''
-            document.getElementById('type').value = ''
+        document.getElementById('name').value = ''
+        document.getElementById('type').value = ''
         renderHoa()
     }
 }
