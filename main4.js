@@ -52,6 +52,7 @@ async function renderHoa() {
 }
 renderHoa()
 async function remove(id) {
+    location='index3.html'
     console.log(id);
     var result = confirm('Bạn có muốn xóa hoa này ? ')
     if (result === true) {
