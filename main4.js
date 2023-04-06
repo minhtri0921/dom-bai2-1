@@ -52,7 +52,7 @@ async function renderHoa() {
 }
 renderHoa()
 async function remove(id) {
-    location='index3.html'
+
     console.log(id);
     var result = confirm('Bạn có muốn xóa hoa này ? ')
     if (result === true) {
@@ -72,89 +72,161 @@ async function remove(id) {
     }
     renderHoa()
 }
-async function add() {
-    document.querySelectorAll("label").forEach(label => {
-        label.style.display = "block";
-    });
-    document.querySelectorAll("input").forEach(input => {
-        input.style.display = "block";
-    });
-    document.querySelectorAll("button").forEach(button => {
-        button.style.display = "block";
-    });
+// async function add() {
+//     document.querySelectorAll("label").forEach(label => {
+//         label.style.display = "block";
+//     });
+//     document.querySelectorAll("input").forEach(input => {
+//         input.style.display = "block";
+//     });
+//     document.querySelectorAll("button").forEach(button => {
+//         button.style.display = "block";
+//     });
 
-    let btnEl = document.getElementById('addFlower')
-    btnEl.onclick = async function () {
-        let newName = document.getElementById('name').value
-        let newType = document.getElementById('type').value
+//     let btnEl = document.getElementById('addFlower')
+//     btnEl.onclick = async function () {
+//         let newName = document.getElementById('name').value
+//         let newType = document.getElementById('type').value
 
-        if ( newName && newType){
-            var formData = {
+//         if ( newName && newType){
+//             var formData = {
+//                 tenHoa: newName,
+//                 loaiHoa: newType,
+//                 hinhAnh: "images/tmp/hoa1.jpg"
+//             }
+//             var options = {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify(formData)
+//             }
+
+//             await fetch('http://localhost:3004/listHoa', options)
+//                 .then(function (response) {
+//                     return response.json();
+//                 });
+
+//             renderHoa()
+//         }else{
+//             let errorElement = document.getElementById('error-message')
+//             errorElement.innerHTML = 'Vui lòng nhập đầy đủ thông tin '
+//             errorElement.style.color = 'red'
+//         }
+//     }
+// }
+//
+function add() {
+    $("label").show();
+    $("input").show();
+    $("button").show();
+
+    $("#addFlower").click(function () {
+        let newName = $("#name").val();
+        let newType = $("#type").val();
+
+        if (newName && newType) {
+            let formData = {
                 tenHoa: newName,
                 loaiHoa: newType,
                 hinhAnh: "images/tmp/hoa1.jpg"
-            }
-            var options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            };
+            $.ajax({
+                url: "http://localhost:3004/listHoa",
+                type: "POST",
+                // stringify : chuyển dữ liệu từ JSON -> string
+                data: JSON.stringify(formData),
+                contentType: "application/json",
+                success: function (response) {
+                    renderHoa();
                 },
-                body: JSON.stringify(formData)
-            }
-    
-            await fetch('http://localhost:3004/listHoa', options)
-                .then(function (response) {
-                    return response.json();
-                });
-    
-            renderHoa()
-        }else{
-            let errorElement = document.getElementById('error-message')
-            errorElement.innerHTML = 'Vui lòng nhập đầy đủ thông tin '
-            errorElement.style.color = 'red'
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
+        } else {
+            let errorElement = $("#error-message");
+            errorElement.html("Vui lòng nhập đầy đủ thông tin");
+            errorElement.css("color", "red");
         }
-    }
+    });
 }
+// async function update(id) {
+//     let a = listHoa.find(function (hoa) {
+//         return hoa.id === id
+//     })
+//     document.querySelectorAll("label").forEach(label => {
+//         label.style.display = "block";
+//     });
+//     document.querySelectorAll("input").forEach(input => {
+//         input.style.display = "block";
+//     });
+//     let input = document.querySelectorAll('input')
+//     input[0].value = a.tenHoa
+//     input[1].value = a.loaiHoa
+//     let btnUpdate = document.getElementById('updateFlower')
+//     btnUpdate.style.display = 'block'
+//     btnUpdate.onclick = async function () {
+//         let name = document.getElementById('name').value
+//         let type = document.getElementById('type').value
 
-async function update(id) {
+//         var formData = {
+//             tenHoa: name,
+//             loaiHoa: type,
+//             hinhAnh: "images/tmp/hoa1.jpg"
+//         }
+
+//         var options = {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(formData)
+//         }
+
+//         await fetch('http://localhost:3004/listHoa' + "/" + id, options)
+//             .then(function (response) {
+//                 return response.json();
+//             });
+//         document.getElementById('name').value = ''
+//         document.getElementById('type').value = ''
+//         renderHoa()
+//     }
+// }
+function update(id) {
     let a = listHoa.find(function (hoa) {
-        return hoa.id === id
-    })
-    document.querySelectorAll("label").forEach(label => {
-        label.style.display = "block";
+        return hoa.id === id;
     });
-    document.querySelectorAll("input").forEach(input => {
-        input.style.display = "block";
-    });
-    let input = document.querySelectorAll('input')
-    input[0].value = a.tenHoa
-    input[1].value = a.loaiHoa
-    let btnUpdate = document.getElementById('updateFlower')
-    btnUpdate.style.display = 'block'
-    btnUpdate.onclick = async function () {
-        let name = document.getElementById('name').value
-        let type = document.getElementById('type').value
+
+    $("label").show();
+    $("input").show();
+    $("button#updateFlower").show();
+    $("input#name").val(a.tenHoa);
+    $("input#type").val(a.loaiHoa);
+
+    $("button#updateFlower").click(function () {
+        let name = $("input#name").val();
+        let type = $("input#type").val();
 
         var formData = {
             tenHoa: name,
             loaiHoa: type,
             hinhAnh: "images/tmp/hoa1.jpg"
-        }
+        };
 
-        var options = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
+        $.ajax({
+            url: 'http://localhost:3004/listHoa/' + id,
+            type: 'PUT',
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            success: function (data) {
+                $("input#name").val('');
+                $("input#type").val('');
+                renderHoa();
             },
-            body: JSON.stringify(formData)
-        }
-
-        await fetch('http://localhost:3004/listHoa' + "/" + id, options)
-            .then(function (response) {
-                return response.json();
-            });
-        document.getElementById('name').value = ''
-        document.getElementById('type').value = ''
-        renderHoa()
-    }
+            error: function () {
+                console.log("Error");
+            }
+        });
+    });
 }
